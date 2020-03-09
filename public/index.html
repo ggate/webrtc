@@ -26,6 +26,11 @@
   </button>
   or
   <input id="inputfile" type="file" accept="video/*"/>
+  or
+  <button class="mdc-button mdc-button--raised" id="nolocalBtn">
+      <i class="material-icons mdc-button__icon" aria-hidden="true">nolocal</i>
+      <span class="mdc-button__label">Not sending out any data</span>
+  </button>
 </div>
 <div id="__">
     <button class="mdc-button mdc-button--raised" disabled id="createBtn">
@@ -52,7 +57,9 @@
   <!-- <input id="inputfile" type="file" accept="video/*"/> -->
 </div>
 <div id="videos">
+    local
     <video id="localVideo" muted autoplay playsinline loop></video>
+    remote
     <video id="remoteVideo" autoplay playsinline></video>
 </div>
 <div class="mdc-dialog"

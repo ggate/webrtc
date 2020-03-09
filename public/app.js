@@ -27,7 +27,8 @@ function init() {
   document.querySelector('#joinBtn').addEventListener('click', joinRoom);
   roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
   var inputNode = document.querySelector('input')
-  inputNode.addEventListener('change', openUserFile, false)
+  inputNode.addEventListener('change', openUserFile, false);
+  document.querySelector('#nolocalBtn').addEventListener('click', openNothing);
 }
 
 
@@ -42,9 +43,14 @@ async function createRoom() {
 
   registerPeerConnectionListeners();
 
-  localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
-  });
+  try{
+    localStream.getTracks().forEach(track => {
+      peerConnection.addTrack(track, localStream);
+    });
+  }
+  catch(err){
+    console.log("no local stream to attach");
+  }
 
   // Code for creating a room below
   const offer = await peerConnection.createOffer();
@@ -134,9 +140,14 @@ async function joinRoomById(roomId) {
     console.log('Create PeerConnection with configuration: ', configuration);
     peerConnection = new RTCPeerConnection(configuration);
     registerPeerConnectionListeners();
-    localStream.getTracks().forEach(track => {
-      peerConnection.addTrack(track, localStream);
-    });
+    try{
+      localStream.getTracks().forEach(track => {
+        peerConnection.addTrack(track, localStream);
+      });
+    }
+    catch(err){
+      console.log("no local stream to attach");
+    }
 
     // Code for collecting ICE candidates below
     const calleeCandidatesCollection = roomRef.collection('calleeCandidates');
@@ -187,6 +198,18 @@ async function joinRoomById(roomId) {
     });
     // Listening for remote ICE candidates above
   }
+}
+
+async function openNothing(e) {
+  localStream = null;
+  remoteStream = new MediaStream();
+  document.querySelector('#remoteVideo').srcObject = remoteStream;
+
+  document.querySelector('#cameraBtn').disabled = true;
+  document.querySelector('#joinBtn').disabled = false;
+  document.querySelector('#createBtn').disabled = false;
+  document.querySelector('#hangupBtn').disabled = false;
+  recordButton.disabled = false;
 }
 
 async function openUserMedia(e) {
@@ -341,7 +364,7 @@ function startRecording() {
   }
 
   try {
-    mediaRecorder = new MediaRecorder(localStream, options);
+    mediaRecorder = new MediaRecorder(remoteStream, options);
   } catch (e) {
     console.error('Exception while creating MediaRecorder:', e);
     errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;

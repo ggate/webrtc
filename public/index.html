@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome to FirebaseRTC</title>
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/5.9.3/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
@@ -20,31 +21,16 @@
 <body>
 <h1>Video Streaming Test App</h1>
 <div id="buttons">
-  <button class="mdc-button mdc-button--raised" id="cameraBtn">
-      <i class="material-icons mdc-button__icon" aria-hidden="true">perm_camera_mic</i>
-      <span class="mdc-button__label">Open camera & microphone</span>
-  </button>
+  <button type="button" class="btn btn-primary" id="cameraBtn">Open camera & microphone</button>
   or
   <input id="inputfile" type="file" accept="video/*"/>
   or
-  <button class="mdc-button mdc-button--raised" id="nolocalBtn">
-      <i class="material-icons mdc-button__icon" aria-hidden="true">nolocal</i>
-      <span class="mdc-button__label">Not sending out any data</span>
-  </button>
+  <button type="button" class="btn btn-primary" id="nolocalBtn">Not sending out any data</button>
 </div>
 <div id="__">
-    <button class="mdc-button mdc-button--raised" disabled id="createBtn">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">group_add</i>
-        <span class="mdc-button__label">Create room</span>
-    </button>
-    <button class="mdc-button mdc-button--raised" disabled id="joinBtn">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">group</i>
-        <span class="mdc-button__label">Join room</span>
-    </button>
-    <button class="mdc-button mdc-button--raised" disabled id="hangupBtn">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">close</i>
-        <span class="mdc-button__label">Hangup</span>
-    </button>
+    <button type="button" class="btn btn-primary" disabled id="createBtn">Create room</button>
+    <button type="button" class="btn btn-primary" disabled id="joinBtn">Join room</button>
+    <button type="button" class="btn btn-primary" disabled id="hangupBtn">Hangup</button>
 </div>
 <div>
      <button id="record" disabled>Start Recording</button>
@@ -54,7 +40,6 @@
     <span id="currentRoom"></span>
 </div>
 <div>
-  <!-- <input id="inputfile" type="file" accept="video/*"/> -->
 </div>
 <div id="videos">
     local
@@ -62,36 +47,32 @@
     remote
     <video id="remoteVideo" autoplay playsinline></video>
 </div>
-<div class="mdc-dialog"
-     id="room-dialog"
-     role="alertdialog"
-     aria-modal="true"
-     aria-labelledby="my-dialog-title"
-     aria-describedby="my-dialog-content">
-    <div class="mdc-dialog__container">
-        <div class="mdc-dialog__surface">
-            <h2 class="mdc-dialog__title" id="my-dialog-title">Join room</h2>
-            <div class="mdc-dialog__content" id="my-dialog-content">
-                Enter ID for room to join:
-                <div class="mdc-text-field">
-                    <input type="text" id="room-id" class="mdc-text-field__input">
-                    <label class="mdc-floating-label" for="my-text-field">Room ID</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-            </div>
-            <footer class="mdc-dialog__actions">
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                    <span class="mdc-button__label">Cancel</span>
-                </button>
-                <button id="confirmJoinBtn" type="button" class="mdc-button mdc-dialog__button"
-                        data-mdc-dialog-action="yes">
-                    <span class="mdc-button__label">Join</span>
-                </button>
-            </footer>
+
+<div class="modal fade" id="room-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Join Room</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="room-id" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="defaultForm-email">Enter ID for room to join:</label>
         </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-default" id="confirmJoinBtn">Join</button>
+      </div>
     </div>
-    <div class="mdc-dialog__scrim"></div>
+  </div>
 </div>
+
 <script src="app.js"></script>
 </body>
 </html>

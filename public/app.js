@@ -1,5 +1,3 @@
-mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
-
 var URL = window.URL || window.webkitURL
 
 const configuration = {
@@ -25,7 +23,7 @@ function init() {
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
   document.querySelector('#createBtn').addEventListener('click', createRoom);
   document.querySelector('#joinBtn').addEventListener('click', joinRoom);
-  roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
+  roomDialog = document.querySelector('#room-dialog');
   var inputNode = document.querySelector('input')
   inputNode.addEventListener('change', openUserFile, false);
   document.querySelector('#nolocalBtn').addEventListener('click', openNothing);
@@ -126,8 +124,9 @@ function joinRoom() {
         document.querySelector(
             '#currentRoom').innerText = `Current room is ${roomId} - You are the callee!`;
         await joinRoomById(roomId);
+        $("#room-dialog").modal("hide");
       }, {once: true});
-  roomDialog.open();
+  $("#room-dialog").modal("show");
 }
 
 async function joinRoomById(roomId) {

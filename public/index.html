@@ -19,21 +19,24 @@
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-<h1>Video Streaming Test App</h1>
 <div id="buttons">
   <div class="container">
     <div class="row">
-      Select your input stream, if any:
+      <div class="col-sm vspace" >
+        <h1>Video Streaming Test App</h1>
+      </div>
     </div>
     <div class="row">
+      <div class="col-sm">
+        Select your input stream, if any:
+      </div>
+    </div>
+    <div class="row vspace">
       <div class="col-sm-3">
-        <button type="button" class="btn btn-primary" id="cameraBtn">Open camera & microphone</button>
+        <button type="button" class="btn btn-primary" id="cameraBtn">Open camera</button>
       </div>
       <div class="col-sm-3">
         <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-          </div>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="inputfile"
               aria-describedby="inputGroupFileAddon01">
@@ -42,18 +45,20 @@
         </div>
       </div>
       <div class="col-sm-3">
-        <button type="button" class="btn btn-primary" id="nolocalBtn">Not sending out any data</button>
+        <button type="button" class="btn btn-primary" id="nolocalBtn">None</button>
       </div>
     </div>
     <div class="row">
-      Room configuration
+      <div class="col-sm">
+        Room configuration
+      </div>
     </div>
     <div class="row">
       <div class="col-sm">
         <span id="currentRoom"></span>
       </div>
     </div>
-    <div class="row">
+    <div class="row vspace">
       <div class="col-sm-2">
         <button type="button" class="btn btn-success" disabled id="createBtn">Create room</button>
       </div>
@@ -65,18 +70,22 @@
       </div>
     </div>
     <div class="row">
-      Recording
+      <div class="col-sm">
+        Recording
+      </div>
     </div>
-    <div class="row">
-      <div class="col-sm-2">
+    <div class="row vspace">
+      <div class="col-sm-3">
         <button type="button" class="btn btn-info" disabled id="record">Start Recording</button>
       </div>
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <button type="button" class="btn btn-info" disabled id="download">Download</button>
       </div>
     </div>
     <div class="row">
-      Stream displays
+      <div class="col-sm">
+        Stream displays
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-6">
@@ -86,12 +95,52 @@
         Remote
       </div>
     </div>
-    <div class="row">
+    <div class="row vspace">
       <div class="col-sm-6">
         <video style="width: 500px;" id="localVideo" muted autoplay playsinline loop></video>
       </div>
       <div class="col-sm-6">
         <video style="width: 500px;" id="remoteVideo" autoplay playsinline></video>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        Connection details
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+      <table class="table table-dark">
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Local Address</th>
+            <td id="localad"></td>
+          </tr>
+          <tr>
+            <th scope="row">Remote Address</th>
+            <td id="remotead"></td>
+          </tr>
+          <tr>
+            <th scope="row">Transport protocol</th>
+            <td id="transport"></td>
+          </tr>
+          <tr>
+            <th scope="row">Local type <sub>(host [local], stun [srflx, prflx], turn [relay])</sub></th>
+            <td id="localtype"></td>
+          </tr>
+          <tr>
+            <th scope="row">Remote type <sub>(host [local], stun [srflx, prflx], turn [relay])</sub></th>
+            <td id="remotetype"></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <button type="button" class="btn btn-primary" id="getDetailBtn">Refresh Connection Details</button>
       </div>
     </div>
   </div>
@@ -111,7 +160,7 @@
         <div class="md-form mb-5">
           <i class="fas fa-envelope prefix grey-text"></i>
           <input type="text" id="room-id" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="defaultForm-email">Enter ID for room to join:</label>
+          <label data-error="wrong" data-success="right" for="defaultForm-email">Enter a room ID:</label>
         </div>
 
       </div>

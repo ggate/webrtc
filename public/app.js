@@ -27,6 +27,7 @@ function init() {
   var inputNode = document.querySelector('input')
   inputNode.addEventListener('change', openUserFile, false);
   document.querySelector('#nolocalBtn').addEventListener('click', openNothing);
+  document.querySelector('#getDetailBtn').addEventListener('click', getConnectionDetails);
 }
 
 
@@ -65,7 +66,7 @@ async function createRoom() {
   roomId = roomRef.id;
   console.log(`New room created with SDP offer. Room ID: ${roomRef.id}`);
   document.querySelector(
-      '#currentRoom').innerText = `Current room is ${roomRef.id} - You are the caller!`;
+      '#currentRoom').innerText = `You just created a room with ID: ${roomRef.id}`;
   // Code for creating a room above
 
   // Code for collecting ICE candidates below
@@ -122,7 +123,7 @@ function joinRoom() {
         roomId = document.querySelector('#room-id').value;
         console.log('Join room: ', roomId);
         document.querySelector(
-            '#currentRoom').innerText = `Current room is ${roomId} - You are the callee!`;
+            '#currentRoom').innerText = `You just joined a room with ID: ${roomId}`;
         await joinRoomById(roomId);
         $("#room-dialog").modal("hide");
       }, {once: true});
@@ -312,6 +313,9 @@ function registerPeerConnectionListeners() {
 
   peerConnection.addEventListener('connectionstatechange', () => {
     console.log(`Connection state change: ${peerConnection.connectionState}`);
+    if (peerConnection.connectionState == "connected"){
+      getConnectionDetails();
+    }
   });
 
   peerConnection.addEventListener('signalingstatechange', () => {
@@ -402,5 +406,34 @@ downloadButton.addEventListener('click', () => {
     window.URL.revokeObjectURL(url);
   }, 100);
 });
+
+function getConnectionDetails(){
+  var connectionDetails = {};
+  if(window.chrome){  // checking if chrome
+
+    var reqFields = [   'googLocalAddress',
+                        'googLocalCandidateType',
+                        'googRemoteAddress',
+                        'googRemoteCandidateType',
+                        'googTransportType'
+                    ];
+    return new Promise(function(resolve, reject){
+      peerConnection.getStats(function(stats){
+        var filtered = stats.result().filter(function(e){return e.stat('googActiveConnection')=='true'})[0];
+        if(!filtered) return reject('Something is wrong...');
+        reqFields.forEach(function(e){connectionDetails[e] = filtered.stat(e)});
+        console.log(connectionDetails);
+        document.getElementById("localad").innerHTML = connectionDetails["googLocalAddress"];
+        document.getElementById("remotead").innerHTML = connectionDetails["googRemoteAddress"];
+        document.getElementById("transport").innerHTML = connectionDetails["googTransportType"];
+        document.getElementById("localtype").innerHTML = connectionDetails["googLocalCandidateType"];
+        document.getElementById("remotetype").innerHTML = connectionDetails["googRemoteCandidateType"];
+      });
+    });
+  }
+  else{
+    console.log("This feature is only supported on Chrome");
+  }
+}
 
 init();

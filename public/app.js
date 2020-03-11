@@ -293,11 +293,11 @@ async function hangUp(e) {
     const roomRef = db.collection('rooms').doc(roomId);
     const calleeCandidates = await roomRef.collection('calleeCandidates').get();
     calleeCandidates.forEach(async candidate => {
-      await candidate.delete();
+      await roomRef.collection('calleeCandidates').doc(candidate.id).delete();
     });
     const callerCandidates = await roomRef.collection('callerCandidates').get();
     callerCandidates.forEach(async candidate => {
-      await candidate.delete();
+      await roomRef.collection('callerCandidates').doc(candidate.id).delete();
     });
     await roomRef.delete();
   }
